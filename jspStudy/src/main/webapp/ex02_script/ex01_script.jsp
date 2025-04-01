@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>script 예제</title>
+<script src="aaa.js"></script> 
 </head>
 <body>
   <h1>스크립트의 종류</h1>

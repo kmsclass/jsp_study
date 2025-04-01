@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>JSP에서 사용되는 주석</title>
-<script src="aaa.js"></script> 
+<script src="aaa.js"></script>
 </head>
 <body>
 <h1>JSP에서 사용되는 주석 : 3가지</h1>
