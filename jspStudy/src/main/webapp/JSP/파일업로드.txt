@@ -1,0 +1,18 @@
+
+======= 내장 객체 ===========
+1. application 객체 : 웹애플리케이션 별로 1개의 객체가 할당.
+                     웹애플리케이션의 모든 jsp 페이지는 같은 application 객체를 공유함
+                     => application 영역임
+2. out 객체 : response 객체의 출력버퍼에 데이터를 전송할 수 있는 출력 스트림 객체
+           <%= str %>
+           <% out.println(str); %>
+3. exception 객체 : 오류페이지에 할당되는 객체            
+4. 그외 : config(서블릿의 초기파라미터값), page(this와 같은 객체)
+
+======= 업로드 ==============
+업로드 : 클라이언트의 파일을 서버로 전송기능
+ <form  enctype="multipart/form-data" method="post">
+요청된 페이지
+  request 객체로 파라미터 조회 불가. 
+  cos.jar 파일의 MultipartRequest 객체를 이용하여 업로드 파일 생성, 파라미터값도 조회
+   
