@@ -10,3 +10,12 @@ create table member (
 )
 
 select * from member
+
+drop table book
+create table book (
+   no int AUTO_INCREMENT primary key,
+   writer varchar(50),
+   title varchar(100),
+   content varchar(2000)
+)
+select * from book

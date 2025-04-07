@@ -20,7 +20,6 @@
     book.setTitle(request.getParameter("title"));
     book.setContent(request.getParameter("content"));
     BookDao dao = new BookDao();
-    String msg = null;
     if(dao.insert(book)) {
 %>    	
 </head>
