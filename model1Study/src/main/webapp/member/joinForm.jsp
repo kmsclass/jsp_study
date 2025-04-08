@@ -14,10 +14,13 @@
   return input_check(this) : input_check() 함수 호출. 매개변수 this(form 객체를 의미)
  --%>
 <form action="join.jsp" name="f" method="post" onsubmit="return input_check(this)">
-  <input type="hidden" name="picture" value="">
+  <input type="hidden" name="picture" value=""> <%-- 업로드된 이미지의이름 --%>
   <table>
     <tr><td rowspan="4" valign="bottom">
        <img src="" width="100" height="120" id="pic"><br>
+       <%--  href="url 정보"
+             href="javascript:win_upload()" => javascript 의 win_upload() 함수 호출 
+       --%>
        <font size="1"><a href="javascript:win_upload()">사진등록</a></font>
     </td><th>아이디</th>
     <td><input type="text" name="id">
@@ -58,5 +61,9 @@
     	 }
     	 return true;
      }
+   function win_upload() {
+	   let op = "width=500,height=500,left=50,top=150";
+	   open("pictureForm.jsp","",op);
+   }
   </script>
   </body></html>

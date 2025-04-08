@@ -36,11 +36,12 @@
 <title>수정 전 화면 조회</title>
 </head>
 <body>
-<form action="update.jsp" method="post" onsubmit="return input_check(this)">
+<form action="update.jsp" method="post" onsubmit="return input_check(this)" name="f">
+ <input type="hidden" name="picture" value="<%=mem.getPicture() %>">
 <table><caption>회원정보 수정</caption>
 <tr><td rowspan="4" valign="bottom">
   <img src="picture/<%=mem.getPicture() %>" width="100" height="120" id="pic"><br>
-  <font sizie="1"><a href="javascript:win_upload()">사진수정</a></font>
+  <font size="1"><a href="javascript:win_upload()">사진수정</a></font>
 </td><th>아이디</th>
 <%-- disabled="disabled" : 파라미터로 전송 안됨
      readonly : 값 수정 불가. 파라미터 전송 가능 
