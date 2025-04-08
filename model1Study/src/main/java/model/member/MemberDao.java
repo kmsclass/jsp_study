@@ -91,6 +91,27 @@ public class MemberDao {
 			 DBConnection.close(conn,pstmt,rs);
 		 }
 		 return null;
-		 
 	 }
+		public boolean update(Member mem) {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = null;
+			String sql = "update member set name=?,gender=?,tel=?,email=?,"
+					+ "picture=? where id=?";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, mem.getName());
+				pstmt.setInt(2, mem.getGender());
+				pstmt.setString(3, mem.getTel());
+				pstmt.setString(4, mem.getEmail());
+				pstmt.setString(5, mem.getPicture());
+				pstmt.setString(6, mem.getId());
+				return pstmt.executeUpdate() > 0;
+			} catch(SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DBConnection.close(conn, pstmt, null);
+			}
+			return false;
+		}
+	 
 }

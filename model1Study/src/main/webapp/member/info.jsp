@@ -45,7 +45,7 @@
   <tr><th>이름</th><td><%=mem.getName() %></td>
   <tr><th>성별</th><td><%=mem.getGender()==1?"남":"여" %></td>
   <tr><th>전화</th><td><%=mem.getTel() %></td>
-  <tr><th>이메일</th><td><%=mem.getTel() %></td>
+  <tr><th>이메일</th><td><%=mem.getEmail() %></td>
   </tr>
   <tr><td colspan="2">
      <a href="updateForm.jsp?id=<%=mem.getId()%>">수정</a>

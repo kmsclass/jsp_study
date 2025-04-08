@@ -42,7 +42,10 @@
   <img src="picture/<%=mem.getPicture() %>" width="100" height="120" id="pic"><br>
   <font sizie="1"><a href="javascript:win_upload()">사진수정</a></font>
 </td><th>아이디</th>
-     <td><input type="text" value="<%=mem.getId()%>" readonly></td></tr>
+<%-- disabled="disabled" : 파라미터로 전송 안됨
+     readonly : 값 수정 불가. 파라미터 전송 가능 
+--%>
+     <td><input type="text" value="<%=mem.getId()%>" name="id" readonly></td></tr>
 <tr><th>비밀번호</th><td><input type="password" name="pass"></td></tr>
 <tr><th>이름</th><td><input type="text" name="name" value="<%=mem.getName()%>"></td></tr>
 <tr><th>성별</th><td>
@@ -52,11 +55,30 @@
 <tr><th>전화번호</th><td colspan="2">
 <input type="text" name="tel" value="<%=mem.getTel()%>"></td></tr>
 <tr><th>이메일</th><td colspan="2">
-<input type="text" name="tel" value="<%=mem.getEmail()%>"></td></tr>
+<input type="text" name="email" value="<%=mem.getEmail()%>"></td></tr>
 <tr><td colspan="3"><button>회원수정</button>
 <% if(id.equals(login)) {%>
 <button type="button" onclick="win_passchg()">비밀번호수정</button>
 <% }  %>
 </td></tr>
-</table></form></body></html>
+</table></form>
+<script type="text/javascript">
+   function  inputcheck(f) {
+       if(f.pass.value == "") {
+		   alert("비밀번호를 입력하세요");
+		   f.pass.focus();
+		   return false;
+	   }
+   }   
+   function win_passchg() {
+	  var op = "width=500, height=250, left=50,top=150";
+	  open("passwordForm.jsp","",op);
+   }
+   function win_upload(){
+	   var op = "width=500,height=150,left=50, top=150";
+	   open("pictureForm.jsp","",op);
+   }
+</script>
+
+</body></html>
 <% } %>
