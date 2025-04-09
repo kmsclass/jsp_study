@@ -10,6 +10,12 @@
 </head>
 <body>
 <h3>반복 관련 태그 : forEach</h3>
+<h4>10에서 1까지 숫자 출력하기</h4>
+<c:set var="ii" value="${10 }" />
+<c:forEach  begin="1" end="10">
+  ${ii}
+  <c:set var="ii" value="${ii - 1}" />
+</c:forEach><br>
 <h4>1에서 10까지 숫자 출력하기</h4>
 <c:forEach var="i" begin="1" end="10">
   ${i}&nbsp;&nbsp;

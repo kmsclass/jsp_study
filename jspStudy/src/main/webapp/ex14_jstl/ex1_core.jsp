@@ -18,7 +18,7 @@
                excape xml : &lt;script&gt;location.href="악성페이지"&lt;/script&gt;
      remove 태그 : 등록된 속성 제거           
 --%>
-<% session.setAttribute("test", "Hello JSTL"); %>
+<% session.setAttribute("test", "<h3>Hello JSTL</h3>"); %>
 test 속성 : ${sessionScope.test }<br>
 test 속성 : <c:out value="${test}" /><br>
 test 속성 : ${test}<br>
