@@ -41,7 +41,7 @@
     	  }
     	  return true;
       }
-      function win_open(page) {
+      function win_open(page) { //page : idForm
     	  open(page+".jsp","","width=500,height=350,left=50,top=150");
       }
    </script>

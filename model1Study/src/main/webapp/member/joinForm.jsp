@@ -59,11 +59,59 @@
     		 f.name.focus();
     		 return false;  //기본 이벤트 취소 
     	 }
+    	 if (!isValidEmail(f.email.value)) {
+    		 alert("이메일 형식이 아닙니다");
+    		 f.email.focus();
+    		 return false; 
+    	 }
+    	 if (!isValidTel(f.tel.value)) {
+    		 alert("전화번호 형식이 아닙니다");
+    		 f.tel.focus();
+    		 return false; 
+    	 }
+
     	 return true;
      }
    function win_upload() {
 	   let op = "width=500,height=500,left=50,top=150";
 	   open("pictureForm.jsp","",op);
    }
+   function isValidEmail(email) {
+	   // 이메일 형식 정규식
+	   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	   return regex.test(email);
+    }
+   function isValidTel(tel) {
+	   const regex = /^(02|01[016789])-?\d{3,4}-?\d{4}$/;
+	   return regex.test(tel);
+    }
+
+	 // 테스트용 예시
+	 const testEmails = [
+	   "example@example.com",
+	   "user.name123@domain.co.kr",
+	   "invalid-email@",
+	   "@no-user.com",
+	   "user@domain",
+	   "user@domain.c",
+	   "1234"
+	 ];
+	 const testTels = [
+		   "02-1234-5678",
+		   "010-123-5678",
+		   "02-123-9875",
+		   "123-5678",
+		   "1234"
+		 ];
+
+	 
+	 testEmails.forEach(email => {
+	   console.log(email,"=>",isValidEmail(email));
+	 });   
+	 testTels.forEach(tel => {
+		   console.log(tel,"=>",isValidTel(tel));
+	 });   
+	 
+   
   </script>
   </body></html>

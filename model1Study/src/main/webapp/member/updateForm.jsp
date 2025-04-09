@@ -65,11 +65,20 @@
 </table></form>
 <script type="text/javascript">
    function  inputcheck(f) {
+       let pattern ="/^(02|010)-d{3,4}-d{4}$/"; 
+       console.log(pattern.test(f.tel.value))
+       if( !pattern.test(f.tel.value)) {
+		   alert("전화번호 형식이 아닙니다.");
+		   f.tel.focus();
+		   return false;
+	   }
+	   
        if(f.pass.value == "") {
 		   alert("비밀번호를 입력하세요");
 		   f.pass.focus();
 		   return false;
 	   }
+	   return false;
    }   
    function win_passchg() {
 	  var op = "width=500, height=250, left=50,top=150";

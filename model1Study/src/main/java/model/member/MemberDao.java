@@ -138,8 +138,30 @@ public class MemberDao {
 				pstmt.setString(1, email);
 				pstmt.setString(2, tel);
 				rs = pstmt.executeQuery();
-				if(rs.next()) {
-					return rs.getString("id");
+				if(rs.next()) { //true : 레코드 찾기 성공
+					return rs.getString("id"); //id 값을 리턴
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DBConnection.close(conn, pstmt, rs);
+			}
+			return null;  //레코드 찾기 실패 또는 오류 발생
+		}
+		public String pwSearch(String id, String email, String tel) {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+			String sql = "select pass from member " 
+			          + " where id =?  and email = ? and tel = ?";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, id);
+				pstmt.setString(2, email);
+				pstmt.setString(3, tel);
+				rs = pstmt.executeQuery();
+				if (rs.next()) {
+					return rs.getString("pass");
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -147,5 +169,21 @@ public class MemberDao {
 				DBConnection.close(conn, pstmt, rs);
 			}
 			return null;
+		}
+		public boolean updatePass(String id, String pass) {
+			Connection conn = DBConnection.getConnection();
+			PreparedStatement pstmt = null;
+			String sql = "update member set pass=? where id2=?";
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, pass);
+				pstmt.setString(2, id);
+				return pstmt.executeUpdate() > 0;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DBConnection.close(conn,pstmt,null);
+			}
+			return false;
 		}
 }

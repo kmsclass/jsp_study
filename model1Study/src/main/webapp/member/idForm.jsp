@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>아이디 찾기</title>
+<link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 <h3>아이디찾기</h3>

@@ -23,6 +23,9 @@ public class SiteMeshFilter extends ConfigurableSiteMeshFilter{
 		//addDecoratorPath(url,decorator 페이지) : layout을 설정
 		//addExcludedPath (url)  : layout페이지를 제외 등록 
 		builder.addDecoratorPath("/member/*", "/layout/layout.jsp")
-		.addExcludedPath("/member/picture*");
+		.addExcludedPath("/member/picture*")
+		.addExcludedPath("/member/id*")
+		.addExcludedPath("/member/password*")
+		.addExcludedPath("/member/pw*");
 	}
 }

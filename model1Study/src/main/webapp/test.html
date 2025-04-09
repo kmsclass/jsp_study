@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+   <script type="text/javascript">
+   function isValidEmail(email) {
+	   // 이메일 형식 정규식
+	   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+	   return regex.test(email);
+    }
+
+	 // 테스트용 예시
+	 const testEmails = [
+	   "example@example.com",
+	   "user.name123@domain.co.kr",
+	   "invalid-email@",
+	   "@no-user.com",
+	   "user@domain",
+	   "user@domain.c"
+	 ];
+
+	 testEmails.forEach(email => {
+	   console.log(email,"=>",isValidEmail(email));
+	 });   
+	 
+   </script>
+
+</body>
+</html>

@@ -11,16 +11,18 @@
      id 없음 : id가 없습니다. 현재화면 idForm.jsp 페이지로 이동             
 --%>
 <%
+   // 1. 파라미터값 (email,tel) 저장
    String email = request.getParameter("email");
    String tel = request.getParameter("tel");
+   //2. db에서 두개의 파라미터를 이용하여 id값을 리턴해주는 함수
    String id = new MemberDao().idSearch(email,tel);
-   if (id == null) {
+   if (id == null) { //조건을 만족하는 id 검색 실패
 %>
 <script>
    alert("해당되는 아이디가 없습니다.");
    location.href = "idForm.jsp";
 </script>
-<% }  else { %>
+<% }  else { // 조건을 만족하는 id 검색 성공 %>
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8">
 <title>아이디 찾기</title>
@@ -33,9 +35,10 @@
   </td></tr>
 </table>
 <script type="text/javascript">
-  function idsend(id) {
-	  opener.document.f.id.value = id;
-	  self.close();
+  function idsend(id) { //id : 실제 id에서 뒤의 2자리를 제외한 값
+	  //opener : loginForm.jsp 
+	  opener.document.f.id.value = id;  //loginForm.jsp 페이지에 id값 입력.
+	  self.close();  //현재 페이지를 닫기
   }
 </script>
 </body>
