@@ -14,6 +14,7 @@
      <option>+</option><option>-</option>
      <option>*</option><option>/</option>
   </select>
+  <%-- 연산자의 파라미터 값으로 출력하기 --%>
   <script>
        var op = '${param.op}'
        if(op == '') op = '+';

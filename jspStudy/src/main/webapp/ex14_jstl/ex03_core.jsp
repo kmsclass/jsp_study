@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%-- /webapp/ex14_jstl/ex03_core.jsp --%>  
@@ -10,12 +12,7 @@
 </head>
 <body>
 <h3>반복 관련 태그 : forEach</h3>
-<h4>10에서 1까지 숫자 출력하기</h4>
-<c:set var="ii" value="${10 }" />
-<c:forEach  begin="1" end="10">
-  ${ii}
-  <c:set var="ii" value="${ii - 1}" />
-</c:forEach><br>
+
 <h4>1에서 10까지 숫자 출력하기</h4>
 <c:forEach var="i" begin="1" end="10">
   ${i}&nbsp;&nbsp;
@@ -66,6 +63,30 @@
      ${i } * ${j} = ${i*j}<br>
   </c:forEach>
 </c:forEach>
+
+<h4>10에서 1까지 숫자 출력하기</h4>
+<c:set var="ii" value="${10 }" />
+<c:forEach  begin="1" end="10" >
+  ${ii}
+  <c:set var="ii" value="${ii - 1}" />
+</c:forEach><br>
+
+<h3>forEach 태그를 이용하여 List 객체의 요소 출력하기</h3>
+<%
+   List<Integer> list = new ArrayList<>();
+   for(int i=1;i<=10;i++) {
+	   list.add(i*10);
+   }
+   pageContext.setAttribute("list", list);
+%>
+<c:forEach var="a" items="${list}" varStatus="s">
+   ${s.index}:${a} &nbsp;&nbsp;&nbsp;
+</c:forEach><br>
+<%-- list를 2줄로 출력하기 --%>
+<c:forEach var="a" items="${list}" varStatus="s">
+   <c:if test="${s.index == 5}"><br></c:if>
+   ${s.count}:${a} &nbsp;&nbsp;&nbsp;
+</c:forEach><br>
 
 </body>
 </html>
