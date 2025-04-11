@@ -7,15 +7,21 @@
 <title>회원목록</title>
 </head>
 <body>
+
 <h2>회원목록</h2>
 <form name="f" method="post" action="mailForm" onsubmit="return input_check(this)">
 <table>
 <tr><th>아이디</th><th>사진</th><th>이름</th><th>성별</th><th>전화</th>
     <th>&nbsp;</th><th><input type="checkbox" name="alchk" 
     onchange="allchkbox(this)">전체선택</th></tr>
-<c:forEach var="m" items="${list}">    
+<c:forEach var="m" items="${list}">
+<%-- m : Member 객체 --%>    
 <tr><td><a href="info?id=${m.id}">${m.id}</a></td>
-<td><img src="picture/${m.picture}" width="30" height="30"></td>
+<%-- 1. model1 프로젝트에서 /webapp/member/picture 폴더를 복사
+     2. model2 프로젝트의  /webapp/picture 위치에 붙여넣기
+     3. picture/${m.picture} => ../picture/${m.picture} 변경
+--%>
+<td><img src="../picture/${m.picture}" width="30" height="30"></td>
 <td>${m.name}</td><td>${m.gender==1?"남":"여"}</td>
 <td>${m.tel}</td>
 <td><a href="updateForm?id=${m.id}">수정</a>
@@ -31,16 +37,18 @@
 <script type="text/javascript">
    function input_check(f) {
 	   let cnt = 0;
+	   // document.querySelectorAll(".idchk") : checkbox 태그들. 
        document.querySelectorAll(".idchk").forEach((idchk)=>{
+    	   //idchk : checkbox 한개
     	   if (idchk.checked) cnt++;
        })
-	   if (cnt == 0) {
+	   if (cnt == 0) { //선택된 checkbox가 없는 경우
 		   alert("이메일 전송 아이디를 선택하세요")
 		   return false;
 	   }
 	   return true;  
 	}
-   function allchkbox(chk) {
+   function allchkbox(chk) { //전체선택 checkbox의 값이 변경된 경우 호출되는 함수
        document.querySelectorAll(".idchk").forEach((idchk)=>{
               idchk.checked = chk.checked;
        })

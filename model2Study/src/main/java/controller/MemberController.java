@@ -223,8 +223,30 @@ public class MemberController extends MskimRequestMapping{
 			request.setAttribute("url", url);
 			return "alert";
 		}
-		
+	   @RequestMapping("list")
+	   @MSLogin("loginAdminCheck")
+	   public String list(HttpServletRequest request,
+			   HttpServletResponse response) {
+		   //관리자로 로그인한 경우만 실행
+		   List<Member> list = dao.list();
+		   request.setAttribute("list", list);
+		   return "member/list";
+	   }		
 //================================================
+		public String loginAdminCheck(HttpServletRequest request,
+				HttpServletResponse response) {
+			String login=(String)request.getSession().getAttribute("login");
+			if(login==null) {
+				request.setAttribute("msg", "로그인 하세요");
+				request.setAttribute("url", "loginForm");
+				return "alert";
+			} else if (!login.equals("admin")) {
+				request.setAttribute("msg", "관리자만 가능한 업무입니다.");
+				request.setAttribute("url", "main");
+				return "alert";			
+			}
+			return null;
+		}
 		public String loginIdCheck
 		   (HttpServletRequest request, HttpServletResponse response) {
 			String id = request.getParameter("id");
@@ -240,4 +262,5 @@ public class MemberController extends MskimRequestMapping{
 			}
 			return null; //정상인 경우
 		}
+		
 }
