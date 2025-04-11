@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>회원가입</title>
-<link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
 <form action="join" name="f" method="post" onsubmit="return input_check(this)">
@@ -33,10 +32,7 @@
     <tr><td colspan="3"><button>회원가입</button></tr>
   </table></form>
   <script type="text/javascript">
-   /* 입력값 검증을 위한 자바스크립트 */  
      function input_check(f) {
-	     //f : <form ...> 태그 
-	     //f.id : <input name="id"....>. name 속성의 값이 id인 태그 
     	 if (f.id.value.trim() == "") {
     		 alert("아이디를 입력하세요");
     		 f.id.focus();
