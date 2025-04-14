@@ -13,6 +13,10 @@
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+	<!-- include summernote css/js -->
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
   <style>
   .fakeimg {
     height: 200px;
@@ -29,16 +33,14 @@
    .footer_company>ul{list-style:"- "; padding-left:15px;}
    .footer_copyright{height:15%; text-align:center}     
    .footer>div{border-top:1px solid gray}
-  </style>
-  <sitemesh:write property="head" />  
+</style>
+  <sitemesh:write property="head" />
 </head>
 <body>
-
 <div class="jumbotron text-center" style="margin-bottom:0">
-  <h1>My First Bootstrap 4 Page</h1>
-  <p>Resize this responsive page to see the effect!</p> 
+  <h1>클라우드(AWS)활용 자바/스프링 개발 부트캠프</h1>
+  <p>GDJ90</p> 
 </div>
-
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <a class="navbar-brand" href="#">Goodee</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -67,11 +69,10 @@
       </c:if>
       <c:if test="${sessionScope.login != null }">
       <li>
-        <a class="nav-link text-success" href="#" style="cursor: default;">
-        ${sessionScope.login}님 반갑습니다.</a>
+        <span class="nav-link text-success" href="#" style="cursor: default;">
+        ${sessionScope.login}님 반갑습니다.</span>
       </li>    
-      <li>
-        <span><a class="nav-link" href="${path}/member/logout">로그아웃</a></span>
+      <li><a class="nav-link" href="${path}/member/logout">로그아웃</a>
       </li>    
       </c:if>
     </ul>
@@ -102,6 +103,42 @@
      Copyright ⓒ GooDee Academy. All rights reserved.
   </div>
  </footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $(".control_button").each(function(index) {
+  	  $(this).attr("idx",index);
+     }).click(function(){
+  	  let index = $(this).attr("idx");
+  	  moveSlider(index);
+    })
+    $(".slider_text").css("left",-300).each(function(index){
+  	  $(this).attr("idx",index);
+    });
+    moveSlider(0);
+    let idx = 0;
+	let inc = 1;
+	setInterval(function(){
+		if(idx >= 4) inc = -1;
+		if(idx <= 0) inc = 1;
+		idx += inc; 
+		moveSlider(idx);
+	},2000)
+})
+   function moveSlider(index) {
+    let moveLeft = -(index *600);
+	$(".slider_panel").animate({left:moveLeft},'slow');
+    
+	$(".control_button[idx=" + index + "]").addClass("select");
+	$(".control_button[idx!=" + index + "]").removeClass("select");
+	$(".slider_text[idx=" + index + "]").show().animate({
+	   left : 0
+	},"slow")
+	$(".slider_text[idx!="+index+"]").hide("slow",function(){
+	  $(this).css("left",-300);
+	})
+   }
+</script>
 
 </body>
 </html>

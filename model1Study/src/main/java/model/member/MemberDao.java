@@ -173,7 +173,7 @@ public class MemberDao {
 		public boolean updatePass(String id, String pass) {
 			Connection conn = DBConnection.getConnection();
 			PreparedStatement pstmt = null;
-			String sql = "update member set pass=? where id2=?";
+			String sql = "update member set pass=? where id=?";
 			try {
 				pstmt = conn.prepareStatement(sql);
 				pstmt.setString(1, pass);

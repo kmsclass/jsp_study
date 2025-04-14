@@ -10,7 +10,7 @@
 
 <h2>회원목록</h2>
 <form name="f" method="post" action="mailForm" onsubmit="return input_check(this)">
-<table>
+<table class="table">
 <tr><th>아이디</th><th>사진</th><th>이름</th><th>성별</th><th>전화</th>
     <th>&nbsp;</th><th><input type="checkbox" name="alchk" 
     onchange="allchkbox(this)">전체선택</th></tr>
@@ -31,8 +31,8 @@
  </td>
  <td><input type="checkbox" name="idchks" class="idchk" value="${m.id}"></td></tr>
 </c:forEach>
- <tr><td colspan="7" id="center">
- <button type="submit" class="btn btn-dark">메일보내기</button>
+ <tr><td colspan="7" id="center" align="right">
+ <button type="submit" class="btn btn-success">메일보내기</button>
 </td></tr></table></form>
 <script type="text/javascript">
    function input_check(f) {
