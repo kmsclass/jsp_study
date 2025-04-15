@@ -1,0 +1,7 @@
+1. mybatisstudy 자바프로젝트 생성
+2. mybatis-3.5.13.jar 폴더에 mybatisstudy 프로젝트 폴더 저장
+3. mapper 패키지 생성
+4. mybatis-config.xml 파일을 mapper 패키지에 복사하기
+5. mapper 패키지에 mybatis.properties 파일 생성하기
+6. mariadb 드라이버 mybatisstudy 프로젝트 폴더 저장
+
