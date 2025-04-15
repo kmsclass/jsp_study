@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,6 +24,8 @@ import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.oreilly.servlet.MultipartRequest;
 
 import gdu.mskim.MSLogin;
 import gdu.mskim.MskimRequestMapping;
@@ -407,6 +410,24 @@ public class MemberController extends MskimRequestMapping{
 	               현재 화면을 닫기
 	      id 없음 : id가 없습니다. 현재화면 idForm 페이지로 이동             
 */
+	   @RequestMapping("id")
+	   public String id(HttpServletRequest request,
+				   HttpServletResponse response) {
+		   String email = request.getParameter("email");
+		   String tel = request.getParameter("tel");
+		   String id = dao.idSearch(email,tel); 
+		   if(id != null) {   
+			   // 뒤쪽 2자를 제외하고 jsp로 데이터 전달 
+			   String showId = id.substring(0,id.length()-2);
+			   request.setAttribute("id", showId);
+			   return "member/id";
+		   } else { //id==null : id 값 없는 경우
+			   request.setAttribute("msg", "아이디를 찾을 수 없습니다.");
+			   request.setAttribute("url", "idForm");
+			   return "alert";
+		   }
+	   }
+	   
 /* 비밀번호 찾기
   1. 파라미터(id,email,tel) 저장.
   2. db에서 id,email과 tel 을 이용하여 pass값을 리턴
@@ -417,6 +438,70 @@ public class MemberController extends MskimRequestMapping{
      비밀번호 못찾은 경우: 정보에 맞는 비밀번호를 찾을 수 없습니다.  메세지 출력후
                      현재 페이지를 pwForm로 페이지 이동. 
  */
+	   @RequestMapping("pw")
+	   public String pw(HttpServletRequest request,
+				   HttpServletResponse response) {
+		   String id = request.getParameter("id");
+		   String email = request.getParameter("email");
+		   String tel = request.getParameter("tel");
+		   String pass = dao.pwSearch(id,email,tel);
+		   if(pass != null) { //비밀번호 검색 성공
+			   request.setAttribute("pass", pass.substring(2,pass.length()));
+		       return "member/pw";
+		   } else { //비밀번호 검색 실패
+			   request.setAttribute("msg", "비밀번호를 찾을 수 없습니다.");
+			   request.setAttribute("url", "pwForm");
+			   return "alert";
+		   }
+	   }
+	   /*
+	    * 1. id 파라미터
+	    * 2. id를 이용하여 db에서 조회.
+	    * 3. DB에서 조회 안되는 경우 : 사용가능한 아이디 입니다. 초록색으로 화면 출력
+	    *    DB에서 조회 되는 경우 : 사용 중인 아이디 입니다. 빨강색 화면 출력
+	    * 4. 닫기 버튼 클릭되면 화면 닫기    
+	    */
+	   @RequestMapping("idchk")
+	   public String idchk (HttpServletRequest request,
+			   HttpServletResponse response) {
+		   String id = request.getParameter("id");
+		   Member mem = dao.selectOne(id);
+		   String msg = null;
+		   boolean able = true;
+		   if (mem == null) {
+			   msg = "사용가능한 아이디 입니다.";
+		   } else {
+			   msg = "사용 중인 아이디 입니다.";
+			   able = false;
+		   }
+		   request.setAttribute("msg", msg);
+		   request.setAttribute("able", able);
+		   return "member/idchk";
+	   }	
+/*
+   1. request 객체로 이미지 업로드 불가 => cos.jar  
+   2. 이미지 업로드 폴더 : 현재폴더/picture 설정 
+   3. opener 화면에 이미지 볼수 있도록 결과 전달 => javascript
+   4. 현재 화면 close 하기                   => javascript
+ */
+   @RequestMapping("picture")
+   public String picture (HttpServletRequest request,
+		   HttpServletResponse response) {
+	   String path = request.getServletContext().getRealPath("") + "picture/";
+	   String fname = null;
+	   File f = new File(path); //업로드되는 폴더 정보
+	   if(!f.exists()) f.mkdirs(); //폴더 생성
+	   MultipartRequest multi = null;
+	   try {
+     	multi =   new MultipartRequest(request,path, 10*1024*1024,"utf-8");
+	   } catch (IOException e) {
+		   e.printStackTrace();
+	   }
+	   fname = multi.getFilesystemName("picture"); //선택된 파일의 이름
+	   request.setAttribute("fname", fname);
+	   return "member/picture";
+   }
+	   
 //================================================
 	   public String passwordLoginCheck(HttpServletRequest request,
 			   HttpServletResponse response) {

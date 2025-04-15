@@ -17,7 +17,7 @@
  --%>
 <table><caption>회원정보</caption>
 <tr><td rowspan="6" width="30%">
-  <img src="picture/${mem.picture}" width="200" height="210"></td>
+  <img src="../picture/${mem.picture}" width="200" height="210"></td>
   <th width="20%">아이디</th><td>${mem.id}</td>
   <tr><th>이름</th><td>${mem.name}</td>
   <tr><th>성별</th><td>${mem.gender==1?"남":"여"}</td>

@@ -14,7 +14,7 @@
  <input type="hidden" name="picture" value="${mem.picture}">
 <table><caption>회원정보 수정</caption>
 <tr><td rowspan="4" valign="bottom">
-  <img src="picture/${mem.picture}" width="100" height="120" id="pic"><br>
+  <img src="../picture/${mem.picture}" width="100" height="120" id="pic"><br>
   <font size="1"><a href="javascript:win_upload()">사진수정</a></font>
 </td><th>아이디</th>
      <td><input type="text" value="${mem.id}" name="id" readonly></td></tr>
