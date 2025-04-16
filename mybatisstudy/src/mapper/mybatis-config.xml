@@ -8,6 +8,7 @@
   <typeAliases> <!-- 클래스의 별명 설정 -->
     <typeAlias type="main.Member" alias="Member"/> <!-- 클래스명을 별명설정 -->
     <typeAlias type="main.Student" alias="Student"/> <!-- 클래스명을 별명설정 -->
+    <typeAlias type="test0415.Professor" alias="Professor"/> <!-- 클래스명을 별명설정 -->
   </typeAliases>
   
   <!-- Connection 객체  -->
@@ -26,5 +27,6 @@
   <mappers>
     <mapper resource="mapper/MemberMapper1.xml"/>
     <mapper resource="mapper/StudentMapper1.xml"/>
+    <mapper resource="mapper/ProfessorMapper.xml"/>
   </mappers>
 </configuration>

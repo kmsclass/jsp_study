@@ -27,4 +27,24 @@
    <delete id="delete" parameterType="int">
       delete from student where studno = #{value}
    </delete>
+<!-- test0415 -->
+  <select id="count" resultType="int">
+     select count(*) from student
+  </select>
+  <select id="list" resultType="Student">
+     select * from student
+  </select>
+  <select id="selectgrade" resultType="Student" 
+          parameterType="int" >
+     select * from student where grade=#{value}
+  </select>
+   <select id="selectname" resultType="Student" parameterType="string">
+     select * from student where name like '${value}%'
+  </select>
+  <select id="selectgradegender" resultType="Student" 
+                                  parameterType="map">
+     select * from student where grade = #{grade}
+                     and substr(jumin,7,1) in (#{gender1},#{gender2})
+  </select> 
+   
 </mapper>
