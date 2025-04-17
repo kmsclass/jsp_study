@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import model.board.Board;
 
@@ -41,6 +42,9 @@ public interface BoardMapper {
 	@Select("select * from board where boardid=#{boardid}"
 			+ " order by grp desc, grpstep asc limit #{start},#{limit}")
 	List<Board> list(Map<String, Object> map);
-	
+	@Select("select * from board where num = #{value}")
+	Board selectone(int num);
+	@Update("update board set readcnt = readcnt + 1 where num=#{value}")
+	void readcntAdd(int num);
 
 }

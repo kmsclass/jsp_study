@@ -69,5 +69,26 @@ public class BoardDao {
 		}
 		return null;
 	}
+	public Board selectOne(int num) {
+		SqlSession session = MybatisConnection.getConnection();
+		try {
+			  return session.getMapper(cls).selectone(num);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			MybatisConnection.close(session);
+		}
+		return null;
+	}
+	public void readcntAdd(int num) {
+		SqlSession session = MybatisConnection.getConnection();
+		try {
+		   session.getMapper(cls).readcntAdd(num);
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			MybatisConnection.close(session);
+		}
+	}
 
 }

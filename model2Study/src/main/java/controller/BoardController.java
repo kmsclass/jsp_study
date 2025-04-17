@@ -148,5 +148,16 @@ public class BoardController extends MskimRequestMapping{
 	 * 4. 조회된 게시물 화면에 전달       
 	 */
 	@RequestMapping("info")
-	
+	public String info(HttpServletRequest request ,HttpServletResponse response) {
+	  int num = Integer.parseInt(request.getParameter("num"));
+	  String boardid = (String)request.getSession().getAttribute("boardid");
+	  if(boardid == null) boardid="1";
+	  Board b = dao.selectOne(num);
+      dao.readcntAdd(num);
+	  String boardName = "공지사항";
+	  if(boardid.equals("2")) boardName = "자유게시판";
+	  request.setAttribute("b",b);
+	  request.setAttribute("boardName",boardName);
+	  return "board/info";
+	}	
 }

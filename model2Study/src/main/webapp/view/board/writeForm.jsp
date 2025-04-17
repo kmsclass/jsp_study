@@ -20,8 +20,8 @@
  <tr><td>내용</td>
  <td><textarea rows="15" name="content" class="form-control" id="content"></textarea></td></tr>
  <tr><td>첨부파일</td><td><input type="file" name="file1"></td></tr>
- <tr><td colspan="2">
-   <a href="javascript:inputcheck()" class="btn btn-primary text-center">게시물등록</a></td></tr>
+ <tr><td colspan="2" class="text-center">
+   <a href="javascript:inputcheck()" class="btn btn-primary">게시물등록</a></td></tr>
 </table></form>
 <script type="text/javascript">
    function inputcheck() {
