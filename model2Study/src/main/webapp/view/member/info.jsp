@@ -15,7 +15,8 @@
                     picture을 get 프로퍼티(preperty) 
    ${mem.id} : mem.getId() 메서드 호출
  --%>
-<table><caption>회원정보</caption>
+ <h3>회원정보</h3>
+<table class="table">
 <tr><td rowspan="6" width="30%">
   <img src="../picture/${mem.picture}" width="200" height="210"></td>
   <th width="20%">아이디</th><td>${mem.id}</td>
@@ -24,10 +25,10 @@
   <tr><th>전화</th><td>${mem.tel}</td>
   <tr><th>이메일</th><td>${mem.email}</td>
   </tr>
-  <tr><td colspan="2">
-     <a href="updateForm?id=${mem.id}">수정</a>
+  <tr><td colspan="2" class="text-center">
+     <a href="updateForm?id=${mem.id}" class="btn btn-primary">수정</a>
      <c:if test="${param.id != 'admin'}">
-     <a href="deleteForm?id=${mem.id}">탈퇴</a>
+     <a href="deleteForm?id=${mem.id}" class="btn btn-danger">탈퇴</a>
      </c:if>
   </td></tr>
 </table>
