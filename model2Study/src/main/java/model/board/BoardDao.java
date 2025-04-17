@@ -53,8 +53,13 @@ public class BoardDao {
 		SqlSession session = MybatisConnection.getConnection();
 		try {
 			map.clear();
-			map.put("boardid", boardid);
-			map.put("start", (pageNum - 1) * limit);
+			map.put("boardid", boardid); //게시판종류
+			map.put("start", (pageNum - 1) * limit); 
+			/*
+			 *    pageNum    start
+			 *       1        0
+			 *       2        10
+			 */
 			map.put("limit",limit);
 			return session.getMapper(cls).list(map);
 		} catch(Exception e) {

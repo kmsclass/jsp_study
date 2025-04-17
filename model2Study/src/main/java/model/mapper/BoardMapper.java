@@ -23,9 +23,24 @@ public interface BoardMapper {
 
 	@Select("select count(*) from board where boardid = #{value}")
 	int count(String boardid);
-
+/*
+      limit #{start},#{limit} => limit 10 , 10 => 10번에서 10개조회
+       num(grp) 컬럼의 역순
+       11 => 첫번째 행, 0
+       10 => 두번째 행, 1
+       9    ...
+       8
+       7
+       6 
+       5 
+       4 
+       3   
+       2
+       1 => 열한번째 행, 10      
+ */
 	@Select("select * from board where boardid=#{boardid}"
 			+ " order by grp desc, grpstep asc limit #{start},#{limit}")
 	List<Board> list(Map<String, Object> map);
+	
 
 }

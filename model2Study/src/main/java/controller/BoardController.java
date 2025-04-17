@@ -72,37 +72,81 @@ public class BoardController extends MskimRequestMapping{
 	 * 3. db에서 해당페이지에 출력될 내용만 조회하여 화면에 출력함
 	 */
 	@RequestMapping("list")
-	public String list(HttpServletRequest request,
-			HttpServletResponse response) {
+	public String list(HttpServletRequest request,HttpServletResponse response) {
+		//pageNum 파라미터가 존재하면 파라미터값을 pageNum 변수 저장
+		//pageNum 파라미터가 없으면 파라미터값을 pageNum 변수는 1로 저장
 		int pageNum = 1;
 		try {
 			pageNum = Integer.parseInt(request.getParameter("pageNum"));
 		} catch (NumberFormatException e) {}
+		//boardid 파라미터값
 		String boardid = request.getParameter("boardid");
-		if(boardid == null || boardid.trim().equals("")) {
-			boardid = "1";
-		} else {
-			request.getSession().setAttribute("boardid", boardid);
-		}
+		if(boardid == null || boardid.trim().equals("")) { 
+			boardid = "1"; //boardid 파라미터가 없는 경우 "1" 설정
+		} 
+		//boardid값을 session에등록
+		request.getSession().setAttribute("boardid", boardid);
 		boardid = (String)request.getSession().getAttribute("boardid");
-		int limit = 10;
-		int boardcount = dao.boardCount(boardid); //등록된 게시물 건수 
+		
+		int limit = 10; //페이지당 출력되는 게시물의 건수
+		int boardcount = dao.boardCount(boardid); //등록된 게시물 건수
+		//pageNum에 해당하는 게시물목록을 최대 10를 db에서 조회
 		List<Board> list = dao.list(boardid,pageNum,limit);
 	    int maxpage = (int)((double)boardcount/limit + 0.95);
+	    /*  maxpage : 필요한 페이지의 갯수
+	     *    게시물건수       maxpage   
+	     *       3              1
+	     *  3.0/10 => 0.3 + 0.95 => (int)(1.25) => 1
+	     *      10              1
+	     *  10.0/10 => 1.0 + 0.95 => (int)(1.95) => 1   
+	     *      11              2
+	     *  11.0/10 => 1.1 + 0.95 => (int)(2.05) => 2    
+	     *     500              50
+	     *  500.0/10 => 50.0 + 0.95 => (int)(50.95) => 50   
+	     *     501              51
+	     *  501.0/10 => 50.1 + 0.95 => (int)(51.05) => 51   
+	     */
 	    int startpage=((int)(pageNum/10.0 + 0.9) - 1) * 10 + 1;
+	    /*
+	     * startpage : 화면에 출력되는 시작 페이지
+	     * 현재페이지(pageNum)    페이지의시작번호
+	     *     1                    1
+	     *     1/10.0 => 0.1 + 0.9 => (int)(1.0 - 1) * 10 => 0 + 1 => 1
+	     *     10                   1
+	     *     10/10.0 => 1.0 + 0.9 => (int)(1.9 - 1) * 10 => 0 + 1 => 1
+	     *     11                   11
+	     *     11/10.0 => 1.1 + 0.9 => (int)(2.0 - 1) * 10 => 10 + 1 => 11
+	     *     502                  501 
+	     *     502/10.0 => 50.2 + 0.9 => (int)(51.1 - 1) * 10 => 500 + 1 => 501
+	     */
 	    int endpage = startpage + 9; 
-	    if(endpage > maxpage) endpage = maxpage;
+	    // endpage : 화면에 출력한 마지막 페이지번호. 한 화면에 10개의 페이지번호를 출력함
+	    // endpage는 maxpage보다 작거나 같아야함	    
+	    if(endpage > maxpage) endpage = maxpage; 
 	    String boardName = "공지사항";
 	    if (boardid.equals("2")) 
 			boardName = "자유게시판";
-	    request.setAttribute("boardName", boardName);
-	    request.setAttribute("boardcount", boardcount);
-	    request.setAttribute("boardid", boardid);
-	    request.setAttribute("pageNum", pageNum);
-	    request.setAttribute("list", list);
-	    request.setAttribute("startpage", startpage);
-	    request.setAttribute("endpage", endpage);
-	    request.setAttribute("maxpage", maxpage);
+	    request.setAttribute("boardName", boardName);  //게시판이름
+	    request.setAttribute("boardcount", boardcount); //게시판 종류별 전체게시물건수
+	    request.setAttribute("boardid", boardid);    //게시판코드
+	    request.setAttribute("pageNum", pageNum);    //현재페이지
+	    request.setAttribute("list", list);          //현재페이지에 출력할 게시물목록
+	    request.setAttribute("startpage", startpage);//페이지시작번호
+	    request.setAttribute("endpage", endpage);    //페이지마지막번호
+	    request.setAttribute("maxpage", maxpage);    //페이지최대번호
+	    int boardnum = boardcount - (pageNum - 1) * limit;
+	    //boardnum : 보여주기 위한 번호
+	    request.setAttribute("boardnum", boardnum);
 	    return "board/list";
 	}
+	/*
+	 * 1. num 파라미터 저장
+	 * 2. num의 게시물을 db에서 조회
+	 *    Board b = BoardDao.selectOne(num)
+	 * 3. 게시물의 조회수를 증가시키기
+	 *    BoardDao.readcntAdd(num)
+	 * 4. 조회된 게시물 화면에 전달       
+	 */
+	@RequestMapping("info")
+	
 }
