@@ -27,5 +27,5 @@ ${b.content}</td></tr></table></td></tr>
   <a href="replyForm?num=${b.num}">[답변]</a>
   <a href="updateForm?num=${b.num}">[수정]</a>
   <a href="deleteForm?num=${b.num}">[삭제]</a>
-  <a href="list">[목록]</a></td></tr></table>
+  <a href="list?boardid=${b.boardid}">[목록]</a></td></tr></table>
 </body></html>
