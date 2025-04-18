@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%-- /webapp/view/book/bookForm.jsp
+    모델2로 http://localhost:8080/model2Study/book/bookForm 요청시 화면 출력     
+ --%>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +30,7 @@
 </script>
 </head>
 <body>
-<form action="test1" method="post" 
+<form action="bookwrite" method="post" 
       onsubmit="return inputcheck(this)">
 <h2>방명록쓰기</h2>
 <table class="table">
