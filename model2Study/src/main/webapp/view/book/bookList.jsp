@@ -10,8 +10,8 @@
 <title>방명록 목록</title>
 </head>
 <body>
-<h2>회원목록</h2>
-<table class="w3-table-all">
+<h2>방명록 목록</h2>
+<table class="table">
 <tr><th>작성자</th><th>제목</th><th>내용</th></tr>
 <c:forEach var="b" items="${list}">
 <tr><td>${b.writer}</td>
