@@ -44,7 +44,7 @@ public class BoardDao {
 			map.put("boardid", boardid);
 			map.put("column", column);
 			map.put("find", find);
-			if(column != null) {
+			if(column != null) { //검색 내용이 존재. 
 				String[] cols = column.split(",");
 				switch(cols.length) {
 				case 3 : map.put("col3",cols[2].trim());
