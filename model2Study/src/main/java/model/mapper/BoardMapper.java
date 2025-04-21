@@ -24,8 +24,16 @@ public interface BoardMapper {
 	@Insert(sql)
 	int insert(Board board);
 
-	@Select("select count(*) from board where boardid = #{value}")
-	int count(String boardid);
+	String sqlcol = "<if test='column != null'>"
+			+ "<if test='col1 != null'> and ( ${col1} like '%${find}%'</if>"
+			+ "<if test='col2 == null'> ) </if>"
+			+ "<if test='col2 != null'> or ${col2} like '%${find}%'</if>"
+			+ "<if test='col2 != null and col3 == null'> ) </if>"
+			+ "<if test='col3 != null'> or ${col3} like '%${find}%') </if></if>";
+	@Select({"<script>",
+		"select count(*) from board where boardid = #{boardid}" +
+		sqlcol,"</script>"})
+	int count(Map<String, Object> map);
 /*
       limit #{start},#{limit} => limit 10 , 10 => 10번에서 10개조회
        num(grp) 컬럼의 역순
@@ -41,8 +49,10 @@ public interface BoardMapper {
        2
        1 => 열한번째 행, 10      
  */
-	@Select("select * from board where boardid=#{boardid}"
-			+ " order by grp desc, grpstep asc limit #{start},#{limit}")
+	@Select({"<script>","select * from board where boardid=#{boardid}" +
+             sqlcol
+			+ " order by grp desc, grpstep asc limit #{start},#{limit}",
+			"</script>"})
 	List<Board> list(Map<String, Object> map);
 	
 	@Select("select * from board where num = #{value}")

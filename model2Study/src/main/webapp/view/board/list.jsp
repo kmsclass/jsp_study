@@ -19,7 +19,7 @@
    <input type="hidden" name="pageNum" value="1" >
    <select  class="w3-select" name="column" >
      <option value="" >선택하시오</option>
-     <option value="writer" >글쓴이</option>
+     <option value="writer" >작성자</option>
 	 <option value="title">제목</option>
 	 <option value="content">내용</option>
      <option value="title,writer">제목+작성자</option>
