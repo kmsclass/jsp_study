@@ -30,8 +30,7 @@
 </script>
 </head>
 <body>
-<form action="bookwrite" method="post" 
-      onsubmit="return inputcheck(this)">
+<form action="bookwrite" method="post" onsubmit="return inputcheck(this)">
 <h2>방명록쓰기</h2>
 <table class="table">
 <tr><td>방문자</td><td><input type="text" name="writer" class="form-control"></td></tr>

@@ -15,6 +15,24 @@
 </head>
 <body>
 <h2>${boardName}</h2>
+<form  action="list?boardid=${boardid}"  method="post" name="sf">
+   <input type="hidden" name="pageNum" value="1" >
+   <select  class="w3-select" name="column" >
+     <option value="" >선택하시오</option>
+     <option value="writer" >글쓴이</option>
+	 <option value="title">제목</option>
+	 <option value="content">내용</option>
+     <option value="title,writer">제목+작성자</option>
+     <option value="title,content">제목+내용</option>
+     <option value="writer,content">작성자+내용</option>
+     <option value="title,writer,content">제목+작성자+내용</option></select>
+     <script type="text/javascript">
+         document.sf.column.value='${param.column}'
+     </script>
+	 <input class="form-control" type="text"
+	   placeholder="Search" name="find" value="${param.find}">
+	<button class="btn btn-primary" type="submit">Search</button>
+</form>
 <table class="table">
  <c:if test="${boardcount == 0}"> 
  <tr><td colspan="5">등록된 게시글이 없습니다.</td></tr>
