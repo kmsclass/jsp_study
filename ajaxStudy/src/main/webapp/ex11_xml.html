@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!-- /webapp/ex11_xml.html -->
+<html><head><meta charset="UTF-8">
+<title>xml 연습</title>
+</head><body>
+<button id="allbtn">전체구</button>
+<button onclick="stateprint('east')">동쪽구</button>
+<button onclick="stateprint('west')">서쪽구</button>
+<button onclick="stateprint('south')">남쪽구</button>
+<button onclick="stateprint('north')">북쪽구</button>
+
+<div id="state"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript">
+function stateprint(st) {
+	//st : 태그명 east,west,....
+	 $("#state").html("");
+	 $.ajax("ex11_address.xml",{
+		 success : function(data) {
+			 $("#state").append("<ul>")
+			 $(data).find(st).find('state').each(function(){
+				 $("#state").append("<li>"+$(this).text()+"</li>")
+			 })
+			 $("#state").append("</ul>")
+		 },
+		 error : function(e){
+			 alert("서버오류:"+e.status)
+		 }
+	 })
+}
+ $(function(){
+  $("#allbtn").click(function(){
+	  $("#state").html(""); //<div id="state"></div> 내용 제거
+	  $.ajax("ex11_address.xml",{
+		  success : function(data){
+			  //data : xml DOM트리 참조객체
+			  $("#state").append("<ul>")  //<div id="state"><ul></div>
+			  //$(data).find("state") : state 태그 목록들. 배열
+			  $(data).find("state").each(function(){
+			     $("#state").append("<li>"+$(this).text()+"</li>")
+    //<div id="state"><ul><li>강북구</li><li>노원구</li>....</div>
+			  })
+			  $("#state").append("</ul>")
+		  },
+		  error : function(e){
+			  alert("서버 오류:" + e.status);
+		  }
+	  })
+  })
+ })
+
+</script></body></html>

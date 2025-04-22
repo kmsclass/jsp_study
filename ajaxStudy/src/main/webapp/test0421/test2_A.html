@@ -10,12 +10,12 @@
 </head>
 <body>
 <input type="text" id="num">
-<button onclick="fetchteset(0)">전체합계구하기</button> 
-<button onclick="fetchteset(1)">짝수합구하기</button> 
-<button onclick="fetchteset(2)">홀수합구하기</button> 
+<button onclick="fetchtest(0)">전체합계구하기</button> 
+<button onclick="fetchtest(1)">짝수합구하기</button> 
+<button onclick="fetchtest(2)">홀수합구하기</button> 
 <div id="result"></div>
 <script type="text/javascript">
-  function fetchteset(kbn) {
+  function fetchtest(kbn) {
 	    fetch("test2.jsp",{
 			   method : "POST",
 			   headers : {

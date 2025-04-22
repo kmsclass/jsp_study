@@ -83,6 +83,20 @@
  <sitemesh:write property="body" />  
 </div>
 <footer class="footer">
+<div><span id="si">
+       <select name="si" onchange="getText('si')">
+          <option value="">시도를 선택하세요</option>
+       </select></span>
+      <span id="gu">
+       <select name="gu" onchange="getText('gu')">
+          <option value="">구군을 선택하세요</option>
+       </select></span>
+      <span id="dong">
+       <select name="dong">
+          <option value="">동리를 선택하세요</option>
+       </select></span>
+</div>
+
   <div class="footer_link">
       <a href="">이용약관</a> |
       <a href="">개인정보취급방침</a> |
@@ -106,38 +120,26 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(function(){
-    $(".control_button").each(function(index) {
-  	  $(this).attr("idx",index);
-     }).click(function(){
-  	  let index = $(this).attr("idx");
-  	  moveSlider(index);
-    })
-    $(".slider_text").css("left",-300).each(function(index){
-  	  $(this).attr("idx",index);
-    });
-    moveSlider(0);
-    let idx = 0;
-	let inc = 1;
-	setInterval(function(){
-		if(idx >= 4) inc = -1;
-		if(idx <= 0) inc = 1;
-		idx += inc; 
-		moveSlider(idx);
-	},2000)
-})
-   function moveSlider(index) {
-    let moveLeft = -(index *600);
-	$(".slider_panel").animate({left:moveLeft},'slow');
-    
-	$(".control_button[idx=" + index + "]").addClass("select");
-	$(".control_button[idx!=" + index + "]").removeClass("select");
-	$(".slider_text[idx=" + index + "]").show().animate({
-	   left : 0
-	},"slow")
-	$(".slider_text[idx!="+index+"]").hide("slow",function(){
-	  $(this).css("left",-300);
+	//ajax을 이용하여 시도 데이터 조회하기
+	let divid;
+	let si;
+	$.ajax({
+		url : "${path}/ajax/select",
+		success : function(data) {
+			//data : ["서울특별시","경기도",...]
+			let arr = JSON.parse(data)
+			$.each(arr,function(i,item){
+				//item : 서울특별시
+				$("select[name=si]").append(function(){
+					return "<option>"+item+"</option>"
+				})
+			})
+		},
+		error: function(e) {
+			alert("서버오류:"+e.status)
+		}
 	})
-   }
+})
 </script>
 
 </body>
