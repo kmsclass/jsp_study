@@ -20,7 +20,7 @@ import gdu.mskim.RequestMapping;
 @WebServlet(urlPatterns= {"/ajax/*"},
  initParams= {@WebInitParam(name="view",value="/view/")})
 public class AjaxController extends MskimRequestMapping{
-  @RequestMapping("select")
+//  @RequestMapping("select")
   public String select (HttpServletRequest request,HttpServletResponse response) {
 	BufferedReader fr = null;
 	//path : sido.txt 파일의 절대 경로
@@ -33,17 +33,104 @@ public class AjaxController extends MskimRequestMapping{
 	//LinkedHashSet : 중복불가. 순서유지. 인덱스사용불가 
 	Set<String> set = new LinkedHashSet<>();
 	String data = null;
-	try {
-	  while((data=fr.readLine()) != null) {
-		  // \\s+ : 정규식표현. 공백한개이상
-			String[] arr = data.split("\\s+");
-			if(arr.length >=3) set.add(arr[0].trim());
-	  }
-	} catch(IOException e) {
-		e.printStackTrace();
+	String si = request.getParameter("si"); //구군설정
+	String gu = request.getParameter("gu"); //동리설정
+	if(si == null && gu==null) { //시도 설정
+		try {
+		  while((data=fr.readLine()) != null) {
+			  // \\s+ : 정규식표현. 공백한개이상
+			  String[] arr = data.split("\\s+");
+			  if(arr.length >=3) set.add(arr[0].trim());
+		  }
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	} else if (gu == null) { //si파라미터값은 null이 아님
+		si = si.trim();
+		try {
+			while((data=fr.readLine()) != null) {
+				String[] arr = data.split("\\s+");
+				if(arr.length >=3 && arr[0].equals(si) &&
+						!arr[1].contains(arr[0]))
+					set.add(arr[1].trim()); //구군 정보 설정
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	} else if (gu != null && si!=null) {
+		si = si.trim();
+		gu = gu.trim();
+		try {
+			while((data=fr.readLine()) != null) {
+				String[] arr = data.split("\\s+");
+				if(arr.length >=3 && arr[0].equals(si) &&
+					arr[1].equals(gu) &&
+					!arr[1].contains(arr[0]) &&
+					!arr[2].contains(arr[1])) {
+					if(arr.length > 3) {
+						if(arr[3].contains(arr[1])) continue;
+						arr[2] += " " + arr[3];
+					}								
+					set.add(arr[2].trim()); //동리 정보 설정
+				}
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	request.setAttribute("list", new ArrayList<String>(set));
 	request.setAttribute("len", set.size());
+	return "ajax/select";
+  }
+  @RequestMapping("select")
+  public String select2 (HttpServletRequest request,HttpServletResponse response) {
+	BufferedReader fr = null;
+	String path =request.getServletContext().getRealPath("/")+ "file/sido.txt";
+	try {
+		fr = new BufferedReader(new FileReader(path));
+	}catch (IOException e) {
+		e.printStackTrace();
+	}
+	final String si = request.getParameter("si"); //구군설정
+	final String gu = request.getParameter("gu"); //동리설정
+	List<String> list = null;
+	if(si == null && gu==null) { //시도 설정	
+	  list = fr.lines().filter(s->s.split("\\s+").length >=3)
+		.map(s->{
+			String[] arr = s.split("\\s+");
+			return arr[0];
+		}).distinct().collect(Collectors.toList());
+	} else if (gu == null) { //si파라미터값은 null이 아님
+	    list = fr.lines().filter(s->{
+	    	String arr[] = s.split("\\s+");
+	    	return arr.length >=3 && arr[0].equals(si.trim()) &&
+					!arr[1].contains(arr[0]);  
+	         })	
+	    	.map(s->{
+   			   String[] arr = s.split("\\s+");
+	    			return arr[1].trim();
+	    	 })
+	    	.distinct().collect(Collectors.toList());
+	} else if (gu != null && si!=null) {
+	    list = fr.lines().filter(s->{
+	    	String arr[] = s.split("\\s+");
+	    	return  (arr.length >=3 && arr[0].equals(si.trim()) &&
+	    			arr[1].equals(gu) &&
+	    			!arr[1].contains(arr[0]) &&
+					!arr[2].contains(arr[1])) ;  
+	         })	
+	    	.map(s->{
+   			   String[] arr = s.split("\\s+");
+   			   if(arr.length > 3) {
+				  arr[2] += " " + arr[3];
+   			   }
+	    		return arr[2].trim();
+	    	 })
+	    	.distinct().collect(Collectors.toList());
+		
+	}
+	request.setAttribute("list", list);
+	request.setAttribute("len", list.size());
 	return "ajax/select";
   }
 }

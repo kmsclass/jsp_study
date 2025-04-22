@@ -140,6 +140,43 @@ $(function(){
 		}
 	})
 })
+function getText(name) {
+	let city = $("select[name='si']").val()
+	let gun = $("select[name='gu']").val()
+	let disname;
+    let toptext='구군을 선택하세요'
+    let params = ''
+    if(name=='si') {
+    	params = "si=" + city.trim()
+    	disname = "gu"
+    } else if (name=='gu') {
+    	params = "si=" + city.trim()+"&gu="+gun.trim()
+    	disname = "dong"
+    	toptext='동리를 선택하세요'
+    } else {
+    	return 
+    }
+    $.ajax({
+    	url : "${path}/ajax/select",
+    	type : "POST",
+    	data:params,
+    	success : function(data) {
+    		let arr = JSON.parse(data)
+    		$("select[name="+disname+"] option").remove()
+    		$("select[name="+disname+"]").append(function(){
+    			return "<option value=''>"+toptext+"</option>"
+    		})
+    		$.each(arr,function(i,item){
+        		$("select[name="+disname+"]").append(function(){
+        			return "<option>"+item+"</option>"
+    		    })
+    		})
+    	   },
+    	error : function(e){
+    		alert("서버오류:"+e.status)
+    	}
+    })	
+}
 </script>
 
 </body>
