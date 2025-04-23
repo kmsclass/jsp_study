@@ -161,4 +161,17 @@ public class BoardDao {
 		}
 		return 0;
 	}
+
+	public List<Map<String, Object>> boardgraph1() {
+		SqlSession session = MybatisConnection.getConnection();
+		List<Map<String,Object>> list = null;
+		try {
+			list = session.getMapper(cls).graph1();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			MybatisConnection.close(session);
+		}
+		return list;
+	}
 }

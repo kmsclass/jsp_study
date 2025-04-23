@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,11 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import gdu.mskim.MskimRequestMapping;
 import gdu.mskim.RequestMapping;
+import model.board.BoardDao;
 
 @WebServlet(urlPatterns= {"/ajax/*"},
  initParams= {@WebInitParam(name="view",value="/view/")})
 public class AjaxController extends MskimRequestMapping{
-//  @RequestMapping("select")
+  //@RequestMapping("select")
   public String select (HttpServletRequest request,HttpServletResponse response) {
 	BufferedReader fr = null;
 	//path : sido.txt 파일의 절대 경로
@@ -35,7 +37,7 @@ public class AjaxController extends MskimRequestMapping{
 	String data = null;
 	String si = request.getParameter("si"); //구군설정
 	String gu = request.getParameter("gu"); //동리설정
-	if(si == null && gu==null) { //시도 설정
+	if(si == null && gu==null) { //시도 설정. 초기상태
 		try {
 		  while((data=fr.readLine()) != null) {
 			  // \\s+ : 정규식표현. 공백한개이상
@@ -45,11 +47,12 @@ public class AjaxController extends MskimRequestMapping{
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-	} else if (gu == null) { //si파라미터값은 null이 아님
+	} else if (gu == null) { //si파라미터값은 null이 아님. 시도선택=>구군설정
 		si = si.trim();
 		try {
 			while((data=fr.readLine()) != null) {
 				String[] arr = data.split("\\s+");
+				//arr[0].equals(si) : 시도와 선택한값이 같은 경우
 				if(arr.length >=3 && arr[0].equals(si) &&
 						!arr[1].contains(arr[0]))
 					set.add(arr[1].trim()); //구군 정보 설정
@@ -132,5 +135,30 @@ public class AjaxController extends MskimRequestMapping{
 	request.setAttribute("list", list);
 	request.setAttribute("len", list.size());
 	return "ajax/select";
+  }
+  // http://localhost:8080/model2Study/ajax/graph1
+  @RequestMapping("graph1")
+  public String graph1(HttpServletRequest request, HttpServletResponse response) {
+	  //[{"cnt":9,"writer":"홍길동"},{"cnt":3,"writer":"홍길순"}, ...]
+	  BoardDao dao = new BoardDao();
+	  List<Map<String,Object>> list = dao.boardgraph1();
+//	  for(Map<String,Object> m : list) 
+//		  System.out.println(m);
+	  StringBuilder json = new StringBuilder("[");
+	  int i=0;
+	  for(Map<String, Object> m : list) {
+		  for(Map.Entry<String,Object> me : m.entrySet()) {
+			  // m : {cnt=9, writer=홍길동}
+			  if(me.getKey().equals("cnt"))
+				  json.append("{\"cnt\":"+me.getValue()+ ",");
+			  if(me.getKey().equals("writer"))
+				  json.append("\"writer\":\""+me.getValue()+ "\"}");
+		  }
+		  i++;
+		  if(i < list.size()) json.append(",");
+	  }
+	  json.append("]");
+	  request.setAttribute("json", json.toString().trim());
+	  return "ajax/graph";
   }
 }

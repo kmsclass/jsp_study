@@ -75,4 +75,13 @@ public interface BoardMapper {
 
 	@Select("select count(*) from board where grp=#{value} and grplevel > 0")
 	int replyCnt(int grp);
+	
+	@Select("select writer,count(*) cnt from board "
+		+ " group by writer order by cnt desc limit 0,5")
+	List<Map<String, Object>> graph1();
+	/*
+	 * Map<컬럼명, 컬럼값>  형태로 db에서 읽어서 전달 
+	 * [{"writer":"홍길동","cnt":9},
+	 * {"writer":"홍길순","cnt":3}]
+	 */
 }

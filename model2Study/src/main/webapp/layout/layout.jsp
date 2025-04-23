@@ -80,6 +80,16 @@
 </nav>
 
 <div class="container" style="margin-top:30px">
+<div class="row">
+   <div class="col" style="border:1px solid #eeeeee">
+   <%-- 작성자별 게시물 등록 건수 파이그래프 : 가장 많이 작성한 작성자 5명--%>
+      <canvas id="canvas1" style="width:100%"></canvas>
+   </div>
+   <div class="col" style="border:1px solid #eeeeee">
+   <%-- 최근작성일자별 게시물 등록 건수 막대그래프 : 최근 7일간--%>
+      <canvas id="canvas2" style="width:100%"></canvas>
+   </div>
+</div>
  <sitemesh:write property="body" />  
 </div>
 <footer class="footer">
@@ -118,8 +128,11 @@
   </div>
  </footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script type="text/javascript" 
+	  src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	piegraph(); //작성자별 게시물 등록 건수 파이그래프로 구현
 	//ajax을 이용하여 시도 데이터 조회하기
 	let divid;
 	let si;
@@ -146,10 +159,10 @@ function getText(name) {
 	let disname;
     let toptext='구군을 선택하세요'
     let params = ''
-    if(name=='si') {
+    if(name=='si') { //시도 선택
     	params = "si=" + city.trim()
     	disname = "gu"
-    } else if (name=='gu') {
+    } else if (name=='gu') { // 구군
     	params = "si=" + city.trim()+"&gu="+gun.trim()
     	disname = "dong"
     	toptext='동리를 선택하세요'
@@ -162,7 +175,9 @@ function getText(name) {
     	data:params,
     	success : function(data) {
     		let arr = JSON.parse(data)
+    		//변경되는 select 태그의 option 태그를 제거
     		$("select[name="+disname+"] option").remove()
+    		//첫번째 내용 추가.
     		$("select[name="+disname+"]").append(function(){
     			return "<option value=''>"+toptext+"</option>"
     		})
@@ -177,6 +192,60 @@ function getText(name) {
     	}
     })	
 }
+function piegraph() {
+	$.ajax("${path}/ajax/graph1",{
+		success : function(data) {
+			//data : [{"cnt":9,"writer":"홍길동"},{"cnt":3,"writer":"홍길순"},{"cnt":3,"writer":"111"},{"cnt":2,"writer":"홍길수"},{"cnt":1,"writer":"삼삼삼"}]
+			pieGraphPrint(data);
+		},
+		error : function(e) {
+			alert("서버오류:" + e.status)
+		}
+	})
+}
+function pieGraphPrint(data) {
+	let rows = JSON.parse(data); //서버에서 JSON 형태로 데이터 전송
+	let writers = [] //작성자목록. 라벨값. 배열
+	let datas = []   //파이 데이터값 배열
+	let colors = []  //색상값 배열
+	$.each(rows,function(i,item) {
+		//item : {"cnt":3,"writer":"홍길순"}
+		writers[i] = item.writer; //[홍길동,홍길순,....]
+		datas[i] = item.cnt       //[9,3,...] 
+		colors[i] = randomColor(1);
+	})
+	let config = {
+		type:'pie',
+		data : {
+			datasets : [{
+				data : datas,
+				backgroundColor : colors
+			}],
+			labels : writers
+		},
+		options : {
+			responsive : true,
+			legend : { display : true, position:"right"},
+			title : {
+				display : true,
+				text : '게시물 작성자별등록건수(최대 5명)',
+				position:"bottom"
+			}
+		}
+	}
+	let ctx = document.querySelector("#canvas1");
+	new Chart(ctx,config)
+}
+function randomColorFactor () {
+	  return Math.round(Math.random() * 255)
+}
+function randomColor(opa) {
+	  return "rgba(" + randomColorFactor() + ","
+			  + randomColorFactor() + ","
+			  + randomColorFactor() + "," 
+			  + (opa || '.3') + ")"
+}
+
 </script>
 
 </body>
