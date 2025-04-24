@@ -161,4 +161,26 @@ public class AjaxController extends MskimRequestMapping{
 	  request.setAttribute("json", json.toString().trim());
 	  return "ajax/graph";
   }
+  @RequestMapping("graph2") //작성일자별 게시물등록건수 그래프를 위한 데이터 전송
+	public String graph2(HttpServletRequest request, 
+			             HttpServletResponse response) {
+		BoardDao dao = new BoardDao();
+		List<Map<String, Object>> list = dao.boardgraph2();
+		StringBuilder json = new StringBuilder("[");
+		int i = 0;
+		for (Map<String, Object> m : list) {
+		  for (Map.Entry<String, Object> me : m.entrySet()) {
+			if (me.getKey().equals("regdate"))
+				json.append("{\"regdate\":\"" + me.getValue() + "\",");
+			if (me.getKey().equals("cnt"))
+				json.append("\"cnt\":" + me.getValue() + "}");
+		  }
+		  i++;
+		  if (i < list.size())	json.append(",");
+		}
+		json.append("]");
+		request.setAttribute("json", json.toString().trim());
+		return "ajax/graph"; 
+	}
+  
 }

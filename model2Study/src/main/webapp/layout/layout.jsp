@@ -81,13 +81,13 @@
 
 <div class="container" style="margin-top:30px">
 <div class="row">
-   <div class="col" style="border:1px solid #eeeeee">
+   <div class="col-6" style="border:1px solid #eeeeee">
    <%-- 작성자별 게시물 등록 건수 파이그래프 : 가장 많이 작성한 작성자 5명--%>
-      <canvas id="canvas1" style="width:100%"></canvas>
+      <canvas id="canvas1"></canvas>
    </div>
-   <div class="col" style="border:1px solid #eeeeee">
+   <div class="col-6" style="border:1px solid #eeeeee">
    <%-- 최근작성일자별 게시물 등록 건수 막대그래프 : 최근 7일간--%>
-      <canvas id="canvas2" style="width:100%"></canvas>
+      <canvas id="canvas2"></canvas>
    </div>
 </div>
  <sitemesh:write property="body" />  
@@ -133,6 +133,7 @@
 <script type="text/javascript">
 $(function(){
 	piegraph(); //작성자별 게시물 등록 건수 파이그래프로 구현
+	bargraph(); //최근일자별 게시물 등록 건수 막대그래프로 구현
 	//ajax을 이용하여 시도 데이터 조회하기
 	let divid;
 	let si;
@@ -236,6 +237,61 @@ function pieGraphPrint(data) {
 	let ctx = document.querySelector("#canvas1");
 	new Chart(ctx,config)
 }
+function bargraph() {
+    $.ajax("${path}/ajax/graph2",{
+    	success : function(data) {
+    		barGraphPrint(data);
+    	},
+    	error : function(e) {
+    		alert("서버오류:"+e.status)
+    	}
+    })
+}
+function barGraphPrint(data){
+	  let rows = JSON.parse(data)
+	  let regdates = []
+	  let datas = []
+	  let colors = []
+	  $.each(rows,function(i,item){
+		  regdates[i]=item.regdate
+		  datas[i]=item.cnt
+		  colors[i] = randomColor(1)
+	  })
+	  let chartData = {
+		  labels : regdates,
+		  datasets : [{
+			  type : "line",
+			  borderWidth : 2,
+			  borderColor:colors,
+			  label :'건수',
+			  fill:false,
+			  data : datas
+		  },{
+			  type : 'bar',
+			  label : '건수',
+			  backgroundColor : colors,
+			  data : datas
+		  }]
+	  }
+	  let config = {
+		  type : 'bar',
+		  data : chartData,
+		  options : {
+			  responsive : true,
+			  title : {display : true,
+				  text : '최근 7일 게시판 등록건수',
+				  position : 'bottom'},
+			  legend : {display : false},
+			  scales : {
+				  xAxes : [{display : true}],
+				  yAxes : [{display : true}]
+			  }
+		  }
+	  }
+	  let ctx = document.getElementById("canvas2");
+	  new Chart(ctx,config)
+}
+
 function randomColorFactor () {
 	  return Math.round(Math.random() * 255)
 }

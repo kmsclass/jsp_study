@@ -84,4 +84,16 @@ public interface BoardMapper {
 	 * [{"writer":"홍길동","cnt":9},
 	 * {"writer":"홍길순","cnt":3}]
 	 */
+	@Select("SELECT date_format(regdate,'%Y-%m-%d') regdate,count(*) cnt FROM board "
+			+ "	group by date_format(regdate,'%Y-%m-%d') "
+			+ "	order by 1 desc"
+			+ "	limit 0,7")
+	List<Map<String, Object>> graph2();
+	/*
+	 * Map<컬럼명, 컬럼값>  형태로 db에서 읽어서 전달 
+	 * [{"regdate":"2025-04-24","cnt":9},
+	 * {"regdate":"2025-04-23","cnt":3}
+	 * ....]
+	 * 
+	 */
 }
