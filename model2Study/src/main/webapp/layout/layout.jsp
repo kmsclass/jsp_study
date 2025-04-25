@@ -84,13 +84,17 @@ value="${pageContext.request.contextPath }" scope="application"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote.min.js"></script>
 <div class="container" style="margin-top:30px">
 <div class="row">
-   <div class="col-6" style="border:1px solid #eeeeee">
+   <div class="col-4" style="border:1px solid #eeeeee">
    <%-- 작성자별 게시물 등록 건수 파이그래프 : 가장 많이 작성한 작성자 5명--%>
       <canvas id="canvas1"></canvas>
    </div>
-   <div class="col-6" style="border:1px solid #eeeeee">
+   <div class="col-4" style="border:1px solid #eeeeee">
    <%-- 최근작성일자별 게시물 등록 건수 막대그래프 : 최근 7일간--%>
       <canvas id="canvas2"></canvas>
+   </div>
+   <div class="col-4" style="border:1px solid #eeeeee">
+   <%-- 수출입은행 환율--%>
+      <div id="exchange"></div>
    </div>
 </div>
  <sitemesh:write property="body" />  
@@ -139,6 +143,7 @@ value="${pageContext.request.contextPath }" scope="application"/>
 $(function(){
 	piegraph(); //작성자별 게시물 등록 건수 파이그래프로 구현
 	bargraph();
+	exchangeRate();
 	//ajax을 이용하여 시도 데이터 조회하기
 	let divid;
 	let si;
@@ -159,6 +164,16 @@ $(function(){
 		}
 	})
 })
+function exchangeRate() {
+	$.ajax("${path}/ajax/exchange",{
+		success : function(data) {
+			$("#exchange").html(data)
+		},
+		error:function(e) {
+			alert("환율 조회 오류:" + e.status)
+		}
+	})
+}
 function getText(name) {
 	let city = $("select[name='si']").val()
 	let gun = $("select[name='gu']").val()
