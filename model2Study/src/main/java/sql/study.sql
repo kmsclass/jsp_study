@@ -14,3 +14,13 @@ create table board (
    grpstep int(5)       -- 그룹의 출력 순서 
 );
 select * from board
+-- 댓글 table 
+create table comment (
+   num int  references board (num),
+   seq int,
+   writer varchar(30),
+   content varchar(2000),
+   regdate datetime,
+   primary key (num,seq)
+)
+select * from comment

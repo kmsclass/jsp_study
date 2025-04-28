@@ -17,11 +17,14 @@ import gdu.mskim.MskimRequestMapping;
 import gdu.mskim.RequestMapping;
 import model.board.Board;
 import model.board.BoardDao;
+import model.comment.Comment;
+import model.comment.CommentDao;
 
 @WebServlet(urlPatterns= {"/board/*"},
     initParams= {@WebInitParam(name="view",value="/view/")})
 public class BoardController extends MskimRequestMapping{
 	private BoardDao dao = new BoardDao();
+	private CommentDao commdao = new CommentDao();
 	
 	public String noticecheck (HttpServletRequest request,
 			HttpServletResponse response) {
@@ -356,6 +359,22 @@ public class BoardController extends MskimRequestMapping{
 	   }
 	   request.setAttribute("msg", msg); 
 	   request.setAttribute("url", url); 
+		return "alert";
+	}
+	@RequestMapping("comment")
+	public String comment
+	    (HttpServletRequest request, HttpServletResponse response) {
+		Comment comm = new Comment();
+		comm.setNum(Integer.parseInt(request.getParameter("num")));
+		comm.setWriter(request.getParameter("writer"));
+		comm.setContent(request.getParameter("content"));
+		int seq = commdao.maxseq(comm.getNum());
+		comm.setSeq(++seq);
+		if(commdao.insert(comm) ) {
+			return "redirect:info?num="+comm.getNum()+"&readcnt=f";
+		}
+		request.setAttribute("msg", "답글 등록시 오류 발생");
+		request.setAttribute("url", "info?num="+comm.getNum()+"&readcnt=f");
 		return "alert";
 	}
 }
