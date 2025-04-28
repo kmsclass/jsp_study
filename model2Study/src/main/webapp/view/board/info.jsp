@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%-- /webapp/view/board/info.jsp --%>   
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> 
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +46,8 @@ ${b.content}</td></tr></table></td></tr>
   <table class="table">
     <c:forEach var="c" items="${commlist}">
     <tr><td>${c.seq}</td><td>${c.writer}</td>
-    <td>${c.content}</td><td>${c.regdate}</td>
+    <td>${c.content}</td>
+    <td><fmt:formatDate value="${c.regdate}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
     <td align="right">
     <a class="btn btn-danger" href="commdel?num=${param.num}&seq=${c.seq}">삭제</a>
     </td></tr> 

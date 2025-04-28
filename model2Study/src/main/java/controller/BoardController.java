@@ -192,16 +192,22 @@ public class BoardController extends MskimRequestMapping{
 	@RequestMapping("info")
 	public String info(HttpServletRequest request ,HttpServletResponse response) {
 	  int num = Integer.parseInt(request.getParameter("num"));
+	  String readcnt = request.getParameter("readcnt");
 //	  String boardid = (String)request.getSession().getAttribute("boardid");
 //	  if(boardid == null) boardid="1";
 	  //b : num값의 게시물 데이터 저장
 	  Board b = dao.selectOne(num);
-      dao.readcntAdd(num);  //조회수 증가
+	  //readcnt 파라미터의 값이 "f"인 경우 조회수 증가 안함
+	  if(readcnt == null || !readcnt.trim().equals("f"))
+         dao.readcntAdd(num);  //조회수 증가
       String boardid = b.getBoardid();
 	  String boardName = "공지사항";
 	  if(boardid.equals("2")) boardName = "자유게시판";
+	  //댓글 목록 조회
+	  List<Comment> commlist = commdao.list(num);
 	  request.setAttribute("b",b);
 	  request.setAttribute("boardName",boardName);
+	  request.setAttribute("commlist",commlist); //댓글 목록 view로 전달
 	  return "board/info";
 	}
 	@RequestMapping("replyForm")
@@ -376,5 +382,20 @@ public class BoardController extends MskimRequestMapping{
 		request.setAttribute("msg", "답글 등록시 오류 발생");
 		request.setAttribute("url", "info?num="+comm.getNum()+"&readcnt=f");
 		return "alert";
+	}
+	/* 삭제는 누구든지 삭제 가능 : 수정 필요함
+	 *  비밀번호를 입력, 로그인 정보로 판단이 필요함. 추가 필요함*/
+	@RequestMapping("commdel")
+	public String commdel 
+	        (HttpServletRequest request, HttpServletResponse response) {
+		int num = Integer.parseInt(request.getParameter("num"));
+		int seq = Integer.parseInt(request.getParameter("seq"));
+		String url = "info?num="+num+"&readcnt=f";
+		if(commdao.delete(num,seq)) {
+			return "redirect:" + url;
+		}
+		request.setAttribute("msg","답글 삭제시 오류발생");
+		request.setAttribute("url", url);
+		return "alert";	
 	}
 }
